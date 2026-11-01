@@ -6,7 +6,12 @@ export const cadastroSchema = z.object({
   nomeSocial: z.string().optional(),
   nomeMae: z.string().min(3),
   nomePai: z.string().min(3),
-  fkEndereco: z.number().int().positive(),
+  endereco: z.object({
+    rua: z.string().min(1, "Rua é obrigatória"),
+    bairro: z.string().min(1, "Bairro é obrigatório"),
+    numero: z.number().int("Número deve ser um inteiro"),
+    cep: z.number().int("CEP deve ser um inteiro"),
+  }),
   dataNasc: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Data deve estar no formato YYYY-MM-DD"),

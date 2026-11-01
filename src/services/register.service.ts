@@ -88,13 +88,9 @@ export async function createUser(data: CadastroInput) {
       throw new AppError(`Cargo ${data.cargo} não encontrado no sistema`, 500);
     }
 
-    const endereco = await tx.endereco.findUnique({
-      where: { id: data.fkEndereco },
+    const endereco = await tx.endereco.create({
+      data: data.endereco,
     });
-
-    if (!endereco) {
-      throw new AppError(`Endereço ${data.fkEndereco} não encontrado`, 400);
-    }
 
     const inputData = data as any;
 
@@ -112,7 +108,7 @@ export async function createUser(data: CadastroInput) {
         sexo: data.sexo,
         raca: data.raca,
         identidade: { connect: { id: identidade.id } },  
-        endereco: { connect: { id: Number(data.fkEndereco) } }, 
+        endereco: { connect: { id: endereco.id } },
         cargos: { connect: { id: cargo.id } },
       },
     });
