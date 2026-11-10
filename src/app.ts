@@ -1,3 +1,4 @@
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import type { Request, Response, NextFunction } from "express";
@@ -14,6 +15,7 @@ import documentoRouter from "./routes/documento.routes.js";
 
 const PORT: number = Number(process.env.PORT) || 8000;
 const app = express();
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
 // ── Rotas ────────────────────────────────────────────────────────
