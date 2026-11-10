@@ -3,10 +3,16 @@ import { CourseService, UsuarioLogado } from '../services/course.service';
 
 const courseService = new CourseService();
 
+const ORDEM_CARGOS = ["ADMIN", "DEPPI", "PROFESSOR", "ALUNO"] as const;
+
 function getUsuarioLogado(req: Request): UsuarioLogado {
   const user = (req as any).user;
   if (!user) throw new Error("Usuário não autenticado.");
-  return user;
+
+  const cargo = ORDEM_CARGOS.find((c) => user.permissions?.includes(c));
+  if (!cargo) throw new Error("Usuário sem cargo definido.");
+
+  return { userId: user.userId, cargo };
 }
 
 export class CourseController {
